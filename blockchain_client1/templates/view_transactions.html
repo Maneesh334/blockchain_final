@@ -78,6 +78,13 @@
             <textarea id="node_url" rows="1" class="form-control">http://127.0.0.1:5000</textarea>
           </div>
         </div>
+        <br>
+        <div class="row">
+          <label class="col-sm-2">Public Key:</label>
+          <div class="col-sm-10">
+            <input type="text" name="publi_key" id="pub_key" rows="2" class="form-control">
+          </div>
+        </div>
 
         <br>
 
@@ -106,10 +113,12 @@
 
     <script>
 
+
       $(function(){
 
         
         $('#view_transactions').click(function(){
+
 
           $.ajax({
             url: document.getElementById("node_url").value + "/chain",
@@ -121,6 +130,7 @@
               var transactions = [];
               count = 1;
 
+              var recordid = document.getElementById("pub_key").value;
               for (i = 1; i < response.length; i++) { 
                 for (j = 0; j < response["chain"][i]["transactions"].length; j++) {
 
@@ -135,8 +145,10 @@
                                 response["chain"][i]["transactions"][j]["value"],
                                 formattedDateTime,
                                 response["chain"][i]["block_number"]];
-                  transactions.push(transaction);
-
+                  if(transaction[2] == recordid)
+                    transactions.push(transaction);
+                  else if(transaction[1] == recordid)
+                    transactions.push(transaction);
                   count += 1;
                 };
               };
